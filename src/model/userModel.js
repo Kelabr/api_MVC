@@ -13,6 +13,18 @@ import {prisma} from "../config/db.js"
         return newUser
     }
 
+    async function findUser(email){
+
+        const user = await prisma.users.findUnique({
+            where:{
+                email
+            }
+        })
+
+        return user
+        
+    }
 
 
-export {createUser}
+
+export {createUser, findUser}

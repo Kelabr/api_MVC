@@ -1,4 +1,4 @@
-import { createUser } from "../model/userModel.js"
+import { createUser, findUser } from "../model/userModel.js"
 
 const userController = {
     async showOk(req, res){
@@ -21,6 +21,28 @@ const userController = {
         }
 
         return res.status(200).send({message:"Usuário Cadastrado"})
+    },
+
+    async login(req, res) {
+        const {email, password} = req.body
+
+        try{
+            const user = await findUser(email)
+
+            if(!user){
+                return res.status(404).send({message:"Usuário não encontrado"})
+            }
+    
+            if(user.password != password){
+                return res.status(404).send({message:"Senha ou email invalidos"})
+            }
+        }catch(error){
+            console.error("ERROR", error)
+        }
+
+        res.status(200).send({message:"Usuário logado"})
+        console.log("logado")
+
     }
 }
 
